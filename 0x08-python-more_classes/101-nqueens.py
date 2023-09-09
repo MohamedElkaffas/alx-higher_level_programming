@@ -12,6 +12,7 @@ Attributes:
     solutions for given amount of columns checked
 
 """
+
 from sys import argv
 
 if len(argv) is not 2:
@@ -111,19 +112,19 @@ def coordinate_format(candidates):
     column number for each queen found
 
     Returns:
-        holberton, the list of coordinates
+        alx, the list of coordinates
 
     """
-    holberton = []
+    alx = []
     for x, attempt in enumerate(candidates):
-        holberton.append([])
+        alx.append([])
         for i, row in enumerate(attempt):
-            holberton[x].append([])
+            alx[x].append([])
             for j, col in enumerate(row):
                 if col:
-                    holberton[x][i].append(i)
-                    holberton[x][i].append(j)
-    return holberton
+                    alx[x][i].append(i)
+                    alx[x][i].append(j)
+    return alx
 
 # init candidates list with first column of 0s
 candidates = []
