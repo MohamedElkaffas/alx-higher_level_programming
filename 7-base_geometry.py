@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-""" 0x0A. Python - Inheritance, task 7 """
+. Python - Inheritance, task 7 """
 
 
 class BaseGeometry:
