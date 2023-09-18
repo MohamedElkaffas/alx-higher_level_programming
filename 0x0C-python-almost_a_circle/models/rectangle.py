@@ -1,23 +1,19 @@
-
-ntains classes for working with Polygons.
+#!/usr/bin/python3
 """
-from .base import Base
+    contains class Rectangle which implements Base.
+"""
+from models.base import Base
 
 
 class Rectangle(Base):
-    """Represents a polygon with 4 perpendicular and
-    two pairs of equal sides.
     """
-
+        class Rectangle implements Base.
+        Methods:
+            __init__()
+    """
     def __init__(self, width, height, x=0, y=0, id=None):
-        """Initializes a new rectangle object.
-
-        Args:
-            width (int): The width of this rectangle.
-            height (int): The height of this rectangle.
-            x (int): The horizontal position of this rectangle.
-            y (int): The vertical position of this rectangle.
-            id (int): The id of this rectangle.
+        """
+            Initializes the instance of the class..
         """
         super().__init__(id)
         self.width = width
@@ -27,128 +23,151 @@ class Rectangle(Base):
 
     @property
     def width(self):
-        """Gets or sets the width of this rectangle.
+        """
+            getter function for __width
+            Returns: width
         """
         return self.__width
 
+    @width.setter
+    def width(self, value):
+        """
+            setter function for width.
+            Args:
+                value (int): value to be set.
+        """
+        if type(value) != int:
+            raise TypeError("width must be an integer")
+        if value <= 0:
+            raise ValueError("width must be > 0")
+
+        self.__width = value
+
     @property
     def height(self):
-        """Gets or sets the height of this rectangle.
+        """
+            getter function for height
+            Returns: height
         """
         return self.__height
 
+    @height.setter
+    def height(self, value):
+        """
+            setter function for height
+            Args:
+                value (int): value to be set.
+        """
+        if type(value) != int:
+            raise TypeError("height must be an integer")
+        if value <= 0:
+            raise ValueError("height must be > 0")
+
+        self.__height = value
+
     @property
     def x(self):
-        """Gets or sets the horizontal position of this rectangle.
+        """
+            getter function for x.
+            Returns: x
         """
         return self.__x
 
+    @x.setter
+    def x(self, value):
+        """
+            setter function for x.
+            Args:
+                value (int): value to be set.
+        """
+        if type(value) != int:
+            raise TypeError("x must be an integer")
+        if value < 0:
+            raise ValueError("x must be >= 0")
+
+        self.__x = value
+
     @property
     def y(self):
-        """Gets or sets the vertical position of this rectangle.
+        """
+            getter function for y
+            Returns: y
         """
         return self.__y
 
-    @width.setter
-    def width(self, value):
-        """Gets or sets the width of this rectangle.
-        """
-        if type(value) is not int:
-            raise TypeError('width must be an integer')
-        if value <= 0:
-            raise ValueError('width must be > 0')
-        self.__width = value
-
-    @height.setter
-    def height(self, value):
-        """Gets or sets the height of this rectangle.
-        """
-        if type(value) is not int:
-            raise TypeError('height must be an integer')
-        if value <= 0:
-            raise ValueError('height must be > 0')
-        self.__height = value
-
-    @x.setter
-    def x(self, value):
-        """Gets or sets the horizontal position of this rectangle.
-        """
-        if type(value) is not int:
-            raise TypeError('x must be an integer')
-        if value < 0:
-            raise ValueError('x must be >= 0')
-        self.__x = value
-
     @y.setter
     def y(self, value):
-        """Gets or sets the vertical position of this rectangle.
         """
-        if type(value) is not int:
-            raise TypeError('y must be an integer')
+            setter function for y
+            Args:
+                value (int): value to be set.
+        """
+        if type(value) != int:
+            raise TypeError("y must be an integer")
         if value < 0:
-            raise ValueError('y must be >= 0')
+            raise ValueError("y must be >= 0")
+
         self.__y = value
 
     def area(self):
-        """Computes the area of this rectangle.
-
-        Returns:
-            int: The area of this rectangle.
         """
-        return self.width * self.height
+            returns the area of the Rectangle instance.
+        """
+        return (self.__width * self.__height)
 
     def display(self):
-        """Prints a text representation of this rectangle.
         """
-        h_off = ' ' * self.x
-        h_val = '#' * self.width
-        print('\n' * self.y, end='')
-        print('{:s}{:s}\n'.format(h_off, h_val) * self.height, end='')
+            prints to stdout the Rectangle instance with '#'
+        """
+        rectangle = ""
+        print_symbol = "#"
+
+#        for i in range(self.__height - 1):
+#            rectangle += print_symbol * self.__width + "\n"
+#        rectangle += print_symbol * self.__width
+
+#        print("{}".format(rectangle))
+
+        print("\n" * self.y, end="")
+
+        for i in range(self.height):
+            rectangle += (" " * self.x) + (print_symbol*self.width) + "\n"
+        print(rectangle, end="")
 
     def __str__(self):
-        """Creates a string representation of this polygon.
-
-        Returns:
-            str: A string representation of this polygon.
         """
-        parts = (
-            self.id,
-            self.x,
-            self.y,
-            self.width,
-            self.height
-        )
-        res = '[Rectangle] ({}) {:d}/{:d} - {:d}/{:d}'.format(
-            parts[0], parts[1], parts[2], parts[3], parts[4]
-        )
-        return res
+            returns a string formart of the rectangle
+        """
+        return "[{}] ({}) {}/{} - {}/{}".format(type(self).__name__, self.id,
+                                                self.__x, self.__y,
+                                                self.__width, self.__height)
 
     def update(self, *args, **kwargs):
-        """Updates the attributes of this polygon.
-
-        Args:
-            args (tuple): A tuple of non-keyword arguments.
-            kwargs (dict): A dictionary of keyword arguments.
         """
-        attrs = ('id', 'width', 'height', 'x', 'y')
-        for key, val in zip(attrs, args):
-            setattr(self, key, val)
-        if (type(args) is None or len(args) == 0) and (type(kwargs) is dict):
+            assigns key/value argument to attributes
+            kwargs is skipped if args is not empty
+            Args:
+                *args -  variable number of no-keyword args
+                **kwargs - variable number of keyworded args
+        """
+        if len(args) == 0:
             for key, val in kwargs.items():
-                if key in attrs:
-                    setattr(self, key, val)
+                self.__setattr__(key, val)
+            return
+
+        try:
+            self.id = args[0]
+            self.width = args[1]
+            self.height = args[2]
+            self.x = args[3]
+            self.y = args[4]
+        except IndexError:
+            pass
 
     def to_dictionary(self):
-        """Creates a dictionary representation of this polygon.
-
-        Returns:
-            dict: A dictionary representation of this polygon.
         """
-        res = {
-            'id': self.id,
-            'width': self.width,
-            'height': self.height,
-            'x': self.x,
-            'y': self.y
-        }
-        return res
+            returns the dictionary repr of a rect
+        """
+        return {'x': getattr(self, "x"), 'y': getattr(self, "y"),
+                'id': getattr(self, "id"), 'height': getattr(self, "height"),
+                'width': getattr(self, "width")}
