@@ -1,48 +1,125 @@
-#!/usr/bin/python3
 """
-    Unittest for Base
-"""
-
+    Test Case for task base.py in models directory.
+‡"""
 import unittest
-from models import base
-Base = base.Base
+from models.base import Base
+from models.square import Square
+import json
 
 
-
-class TestBase(unittest.TestCase):
+class TestBaseClass(unittest.TestCase):
     """
-        test for Base
+        Test class for the base class.
     """
-    def test_creation_id(self):
+    def test_id_none(self):
         """
-            test if value of id has the good assignment
+            initialise an instance of the base class with no id
         """
-        b1 = Base()
-        b2 = Base()
-        b3 = Base()
-        b4 = Base(12)
-        b5 = Base(-5)
-        b6 = Base(6.3)
-        b7 = Base()
-        b8 = Base(None)
+        b = Base()
+        self.assertEqual(1, b.id)
 
-        self.assertEqual(b1.id, 1)
-        self.assertEqual(b2.id, 2)
-        self.assertEqual(b3.id, 3)
-        self.assertEqual(b4.id, 12)
-        self.assertEqual(b5.id, -5)
-        self.assertEqual(b6.id, 6.3)
-        self.assertEqual(b7.id, 4)
-        self.assertEqual(b8.id, 5)
+    def test_id(self):
+        """
+            Initialise an instance with id > 0
+        """
+        b = Base(12)
+        self.assertEqual(12, b.id)
 
-    def test_to_json_string(self):
+    def test_id_zero(self):
+        """
+            Initialise instance with id == 0
+        """
+        b = Base(0)
+        self.assertEqual(0, b.id)
+
+    def test_id_negative(self):
+        """
+            Initialise instance with id < 0
+        """
+        b = Base(-2)
+        self.assertEqual(-2, b.id)
+
+    def test_id_string(self):
+        """
+            Intialise instance with id is string
+        """
+        b = Base("Base")
+        self.assertEqual("Base", b.id)
+
+    def test_id_list(self):
+        """
+            Initialise instance with id is list
+        """
+        b = Base([1, 3, 6])
+        self.assertEqual([1, 3, 6], b.id)
+
+    def test_id_tuple(self):
+        """
+            Initialise instance with id is tuple
+        """
+        b = Base((1, 3))
+        self.assertEqual((1, 3), b.id)
+
+    def test_id_dict(self):
+        """
+            Initialise instance with id is dict
+        """
+        b = Base({'id': 12})
+        self.assertEqual({'id': 12}, b.id)
+
+    def test_to_json_type(self):
+        """
+           test to_json type
+        """
+        sq = Square(9)
+        json_dict = sq.to_dictionary()
+        json_string = Base.to_json_string([json_dict])
+        self.assertEqual(type(json_string), str)
+
+    def test_to_json_value(self):
+        """
+             Test to json value (string)
+        """
+        sq = Square(1, 0, 0, 9)
+        json_dict = sq.to_dictionary()
+        json_string = Base.to_json_string([json_dict])
+        self.assertEqual(json.loads(json_string), [{"id": 9, "y": 0,
+                                                    "size": 1, "x": 0}])
+
+    def test_to_json_None(self):
+        """
+            test to json None
+        """
         json_string = Base.to_json_string(None)
-        self.assertEqual(json_string, '[]')
+        self.assertEqual(json_string, "[]")
+
+    def test_to_json_empty(self):
+        """
+            test to_json Empty
+        """
+        json_string = Base.to_json_string([])
+        self.assertEqual(json_string, "[]")
 
     def test_from_json_string(self):
-        json_string = Base.from_json_string(None)
-        self.assertEqual(json_string, [])
+        """
+            test from json_string
+        """
+        sq = Square(1, 0, 0, 234)
+        json_dict = sq.to_dictionary()
+        json_string = Base.to_json_string([json_dict])
+        json_list = Base.from_json_string(json_string)
+        self.assertEqual(json_list, [{'size': 1, 'x': 0, 'y': 0, 'id': 234}])
 
+    def test_from_json_none(self):
+        """
+            Test from json none
+        """
+        json_list = Base.from_json_string(None)
+        self.assertEqual(json_list, [])
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_from_json_empty(self):
+        """
+            test from json none
+        """
+        json_list = Base.from_json_string([])
+        self.assertEqual(json_list, [])
